@@ -6957,10 +6957,6 @@ a.list-group-item-danger.active:focus {
 
 
         tbody td, thead th {
-<<<<<<< HEAD
             width: 10em;
-=======
-            width: 28%;
->>>>>>> origin/master
             float: left;
         }
