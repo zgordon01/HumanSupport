@@ -1,1 +1,71 @@
-this is admin!!
+<div class="table-responsive col-md-6">
+	<form>
+		<table class="table table-striped">
+			<thead>
+				<tr class="active">
+					<th>User Name</th>
+					<th>Name</th>
+					<th>Edit User</th>
+					<th>Delete User</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="x in users">
+					<td>{{x.user_name}}</td>
+					<td>{{x.full_name}}</td>
+					<td><button class="btn btn-warning" type="button">Edit User</button></td>
+					<td><button class="btn btn-danger" type="button">Delete User</button></td>
+				</tr>
+				<tr ng-repeat="x in users">
+					<td>{{x.user_name}}</td>
+					<td>{{x.full_name}}</td>
+					<td><button class="btn btn-warning" type="button">Edit User</button></td>
+					<td><button class="btn btn-danger" type="button">Delete User</button></td>
+				</tr>
+				<tr ng-repeat="x in users">
+					<td>{{x.user_name}}</td>
+					<td>{{x.full_name}}</td>
+					<td><button class="btn btn-warning" type="button">Edit User</button></td>
+					<td><button class="btn btn-danger" type="button">Delete User</button></td>
+				</tr>
+				<tr ng-repeat="x in users">
+					<td>{{x.user_name}}</td>
+					<td>{{x.full_name}}</td>
+					<td><button class="btn btn-warning" type="button">Edit User</button></td>
+					<td><button class="btn btn-danger" type="button">Delete User</button></td>
+				</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-success" type="button">Create a User</button>    
+	</form>
+</div>
+<div class="table-responsive col-md-6">
+	<form>
+		<table class="table table-striped">
+			<thead>
+				<tr class="active">
+					<th>Name</th>
+					<th>Subject</th>
+					<th>Delete this Ticket</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="x in problems">
+					<td>{{x.name}}</td>
+					<td>{{x.problem}}</td>
+					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
+				</tr>
+				<tr ng-repeat="x in problems">
+					<td>{{x.name}}</td>
+					<td>{{x.problem}}</td>
+					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
+				</tr>
+				<tr ng-repeat="x in problems">
+					<td>{{x.name}}</td>
+					<td>{{x.problem}}</td>
+					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>

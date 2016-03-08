@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="landingapp" ng-controller="navbar">
+<html ng-app="landingapp" ng-controller="home">
    <head>
       <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6-dist/css/template.css">
       <title>Human Support</title>
@@ -10,29 +10,8 @@
                <a href="home.html"><img src="img/logo_50.gif" alt="Human Suport Logo"></a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-               <ul class="nav navbar-nav">
-                  <li class="dropdown">
-                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Modify Tickets <span class="caret"></span></a>
-                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#users">users</a></li>
-                        <li class="divider"></li>
-                        <li>
-                           <a href="#">Search for a Ticket to Edit </a> 
-                           <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Ticket ID#">
-                           </div>
-                        </li>
-                        <li><a href="#admin">Go to admin</a></li>
-                     </ul>
-                  </li>
-               </ul>
-               <form class="navbar-form navbar-right" role="search">
-                  <div class="form-group">
-                     <input type="text" class="form-control" placeholder="Search for a Ticket">
-                  </div>
-               </form>
                <ul class="nav navbar-nav navbar-right">
-                  <li><a class="btn btn-info" ng-click="logout()">Logout</a></li>
+                  <a class="btn btn-info" ng-click="logout()">Logout</a>
                </ul>
             </div>
          </div>
@@ -47,19 +26,21 @@
                   <p>Sorry to bother you. We're just making sure you're still here!</p>
                </div>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" ng-click="sess_timer(); stillHere()">I'm Still Here! {{count}}</button>
+                  <button type="button" class="btn btn-success" ng-click="stillHere()">I'm Still Here! {{count}}</button>
                </div>
             </div>
          </div>
       </div>
    </head>
    <body>
+	   
       <div ng-view>
       </div>
    </body>
    <script src="js/angular-1.5.min.js"></script>
    <script src="js/angular-route.js"></script>
-   <script src="js/controllers.js"></script>
+   <script src="js/modules.js"></script>
+    <script src="js/controllers.js"></script>
    <script src="js/jquery-2.2.0.min.js"></script>
    <script src="js/bootstrap-3.3.6-dist/bootstrap.min.js"></script>
 </html>

@@ -1,0 +1,156 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="../main/css/bootstrap-3.3.6-dist/css/template.css">
+</head>
+<div class="table-responsive">
+	<h3>Get Tickets by Stack</h3>
+	<p>Returns all tickets that are a part of the specified stack via JSON.</p>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+			<th>Parameter Name</th>
+			<th>Variable Type</th>
+			<th>Param Description</th>
+			<th>Example Value</th>
+		</tr>
+			</thead>
+		<tbody>
+		<tr>
+			<td>Stack Name</td>
+			<td>String</td>
+			<td>The Name of the Stack to be accessed.</td>
+			<td>"Networking", "End-User"</td>
+		</tr>
+			<tr>
+			<td>Session Key</td>
+			<td>String</td>
+			<td>The User's session key that uniquely identifies them.</td>
+			<td>"68gt6gr4e6d4e65"</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="table-responsive">
+	<h3>Get Tickets by User Owned</h3>
+	<p>Returns all tickets that are owned by a specified user (Techs and Users) via JSON.</p>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Parameter Name</th>
+			<th>Variable Type</th>
+			<th>Param Description</th>
+			<th>Example Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Session Key</td>
+			<td>String</td>
+			<td>The User's session key that uniquely identifies them.</td>
+			<td>"68gt6gr4e6d4e65"</td>
+		</tr>
+		<tr>
+			<td>User Type</td>
+			<td>Integer</td>
+			<td>The type of user</td>
+			<td>1, 2 or 3</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="table-responsive">
+	<h3>POST Update ticket by Ticket ID</h3>
+	<p>Updates the information of a ticket.</p>
+	<p>In addition to these values, all of the properties of the ticket will be passed with the updated information. This route will allow new comments to be added as well.</p>
+	<p>Properties of a ticket include the ticket's stack, subject, description, requestor, employee owned, and comments.</p>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Parameter Name</th>
+			<th>Variable Type</th>
+			<th>Param Description</th>
+			<th>Example Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Session Key</td>
+			<td>String</td>
+			<td>The User's session key that uniquely identifies them.</td>
+			<td>"68gt6gr4e6d4e65"</td>
+		</tr>
+		<tr>
+			<td>Ticket ID</td>
+			<td>Integer</td>
+			<td>The ticket's ID</td>
+			<td>14312</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="table-responsive">
+	<h3>POST Delete ticket by ID</h3>
+	<p>Allows a ticket to be deleted by a tech or the admin.</p>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Parameter Name</th>
+			<th>Variable Type</th>
+			<th>Param Description</th>
+			<th>Example Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Session Key</td>
+			<td>String</td>
+			<td>The User's session key that uniquely identifies them.</td>
+			<td>"68gt6gr4e6d4e65"</td>
+		</tr>
+		<tr>
+			<td>Ticket ID</td>
+			<td>Integer</td>
+			<td>The ticket's ID</td>
+			<td>14312</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="table-responsive">
+	<h3>POST Create a ticket</h3>
+	<p>Allows a ticket to be created by a user.</p>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Parameter Name</th>
+			<th>Variable Type</th>
+			<th>Param Description</th>
+			<th>Example Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Session Key</td>
+			<td>String</td>
+			<td>The User's session key that uniquely identifies them.</td>
+			<td>"68gt6gr4e6d4e65"</td>
+		</tr>
+		<tr>
+			<td>Subject</td>
+			<td>String</td>
+			<td>Short description of the issue.</td>
+			<td>"Broken computer."</td>
+		</tr>
+		<tr>
+			<td>Description</td>
+			<td>String</td>
+			<td>Detailed description of the issue.</td>
+			<td>"I touched my computer and it turned into a fireball. Please help me!!"</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
