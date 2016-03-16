@@ -1,20 +1,20 @@
 angular.module('landingapp').controller('home', function($scope, $http, $timeout, $location, $interval) {
     //begins the timer for session timeouts. This entire block of code fires after X length of time
-    $scope.sessionTimer = function() {
-        $scope.sessTimer = $timeout(function() {
+    var sessionTimer = function() {
+        sessTimer = $timeout(function() {
 
             //toggles the modal to on once the time has passesd
             $('#timeoutmodal').modal('toggle');
 
             //this fires after 30 seconds and invokes logout()
-            $scope.logouttimer = $timeout(function() {
+            logouttimer = $timeout(function() {
                 $scope.logout();
             }, 30000);
 
             //declares the modal display counter to start at 30
             $scope.count = 30;
             //counts down for display on the modal
-            $scope.countdown = $interval(function() {
+            countdown = $interval(function(){
                 $scope.count = $scope.count - 1;
             }, 1000);
 
@@ -22,7 +22,7 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
     };
 
     //logout function that clears session storage and redirects
-    $scope.logout = function() {
+    $scope.logout = function(){
         sessionStorage.sesskey = "";
         sessionStorage.usertype = "";
         window.location = "index.html";
@@ -32,18 +32,18 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
             //toggles the modal to off once the button is clicked
             $('#timeoutmodal').modal('toggle');
             //cancels the modal's timers
-            $interval.cancel($scope.countdown);
-            $timeout.cancel($scope.logouttimer);
+            $interval.cancel(countdown);
+            $timeout.cancel(logouttimer);
             //reinvokes the session timer
-            $scope.sessionTimer();
+            sessionTimer();
         }
         //restart the sessionTimer
     $scope.resetSession = function() {
-            $timeout.cancel($scope.sessTimer);
-            $scope.sessionTimer();
+            $timeout.cancel(sessTimer);
+            sessionTimer();
         }
         //invoked when the page is initialized
-    $scope.init = function() {
+    var init = function() {
         //route the user to where they need to go
         if (sessionStorage.usertype === "1" && sessionStorage.sesskey !== "") {
             $location.url("admin");
@@ -55,10 +55,10 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
             $location.url("invalid");
         }
         //begin the session timer
-        $scope.sessionTimer();
+        sessionTimer();
     };
     //invoke init() on page load
-    $scope.init();
+    init();
     $scope.test = "This is home scope...";
 });
 
@@ -66,36 +66,36 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
 
 angular.module('landingapp').controller('techcontroller', function($scope, $http, $location) {
     $scope.test = "This is technician scope only...";
-    $scope.init = function() {
+    var init = function() {
         if (sessionStorage.usertype !== "2") {
             $location.url('invalid');
         }
     }
-    $scope.init();
+    init();
 });
 
 
 
 angular.module('landingapp').controller('userscontroller', function($scope, $http, $location) {
     $scope.test = "This is mortals scope only...";
-    $scope.init = function() {
+    var init = function() {
         if (sessionStorage.usertype !== "3") {
             $location.url('invalid');
         }
     }
-    $scope.init();
+    init();
 });
 
 
 
 angular.module('landingapp').controller('admincontroller', function($scope, $http, $location) {
     $scope.test = "This is admin scope only...";
-    $scope.init = function() {
+    var init = function() {
         if (sessionStorage.usertype !== "1") {
             $location.url('invalid');
         }
     }
-    $scope.init();
+    init();
 });
 
 
@@ -121,7 +121,7 @@ angular.module('landingapp').controller('failurecontroller', function($scope, $h
 
 
 //login page module
-angular.module('login', []).controller('logincontroller', function($scope, $http) {
+angular.module('login', []).controller('logincontroller', function($scope, $http, queryservice) {
     //set our validity and loading booleans for user feedback
 
     //valid is for the incorrect credentials popup
@@ -134,103 +134,64 @@ angular.module('login', []).controller('logincontroller', function($scope, $http
 	
     //authentication function
     $scope.auth = function() {
-        var request = $http({
-            method: 'POST',
-            url: 'http://198.211.99.235:8080/v1/login',
-            data: $.param({
-                username: $scope.username,
-                password: $scope.pass
-            }),
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-        request.success(function(data){
-            $scope.loading = true;
+		$scope.loading = true;
+        var query = queryservice.query('v1/login', {username: $scope.username,password: $scope.pass}, 'POST');
+        query.then(function(result){
             //if the credentials are valid, store the user's id and user's type in session storage, stop loading bar and redirect ($location??)
-            if (data.valid == "yes") {
+            if (result.data.valid == "yes") {
                 $scope.loading = false;
-                sessionStorage.sesskey = data.sesskey;
-                sessionStorage.usertype = data.usertype;
+                sessionStorage.sesskey = result.data.sesskey;
+                sessionStorage.usertype = result.data.usertype;
                 window.location = "home.html";
-				//else, reset the loading bar and show the invalid message
+			//if the credentials are not valid, set the loading bar to off and show the invalid message
             } else {
                 $scope.loading = false;
                 $scope.valid = false;
             }
         });
     }
-});
-
-
-/*Query template
-$scope.auth = function(){
-		var request = $http({
-		  method : 'POST',
-		  url    : 'http://198.211.99.235:8080/ROUTE',
-		  data : $.param({username : $scope.username, password : $scope.pass}),
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-		});
-    request.success(function (data){
-        $scope.loading = true;
-				//if the credentials are valid, store the user's id and user's type in session storage
-				if (data.valid == "yes") {
-					$scope.loading = false;
-					sessionStorage.sesskey = data.sesskey;
-					sessionStorage.usertype = data.usertype;
-					window.location = "home.html";
-				} else {
-					$scope.loading = false;
-					$scope.valid = false;
-				}
-    });}
-    
-	
-	
-	$scope.auth = function(method, route, params) {
-        var request = $http({
-            method: method,
-            url: 'http://198.211.99.235:8080/' + route,
-            //give params with this syntax {username : $scope.username, password : $scope.pass}
-            data: $.param(params),
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-        request.success(function(data) {
-            return data;
-        });
-    }
-	
-	
-	
-	
-	
-	.factory('queryservice', function($http, $q) {
+}).factory('queryservice', function($http) {
     return {
-        post: function(route, params){
-			var deferred = $q.defer();
-            var returndata;
-            var request = $http({
-                method: 'POST',
+        query: function(route, params, methodd){
+            return $http({
+                method: methodd,
                 url: 'http://198.211.99.235:8080/' + route,
                 //give params with this syntax {username : $scope.username, password : $scope.pass}
                 data: $.param(params),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-            }).then(
-				function(data){
-					alert("farts");
-					returndata = JSON.stringify(data);
-					alert("about to return " + returndata);
-					deferred.resolve(returndata);
-					return deferred.promise;
-				}
-			);
+            });
         }
     }
-
 });
+
+
+/*Query service
+
+.factory('queryservice', function($http) {
+    return {
+        query: function(route, params, methodd){
+            return $http({
+                method: methodd,
+                url: 'http://198.211.99.235:8080/' + route,
+                //give params with this syntax {username : $scope.username, password : $scope.pass}
+                data: $.param(params),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
+    }
+});
+
+
+
+$scope.function = function() {
+        var query = queryservice.query('v1/login', {username: $scope.username,password: $scope.pass}, 'POST');
+        query.then(function(result){
+			//do things once query has returned
+        });
+    }
    
 */
