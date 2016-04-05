@@ -1,5 +1,5 @@
+
 <div class="table-responsive col-md-6">
-	<form>
 		<table class="table table-striped">
 			<thead>
 				<tr class="active">
@@ -16,56 +16,35 @@
 					<td><button class="btn btn-warning" type="button">Edit User</button></td>
 					<td><button class="btn btn-danger" type="button">Delete User</button></td>
 				</tr>
-				<tr ng-repeat="x in users">
-					<td>{{x.user_name}}</td>
-					<td>{{x.full_name}}</td>
-					<td><button class="btn btn-warning" type="button">Edit User</button></td>
-					<td><button class="btn btn-danger" type="button">Delete User</button></td>
-				</tr>
-				<tr ng-repeat="x in users">
-					<td>{{x.user_name}}</td>
-					<td>{{x.full_name}}</td>
-					<td><button class="btn btn-warning" type="button">Edit User</button></td>
-					<td><button class="btn btn-danger" type="button">Delete User</button></td>
-				</tr>
-				<tr ng-repeat="x in users">
-					<td>{{x.user_name}}</td>
-					<td>{{x.full_name}}</td>
-					<td><button class="btn btn-warning" type="button">Edit User</button></td>
-					<td><button class="btn btn-danger" type="button">Delete User</button></td>
-				</tr>
 			</tbody>
 		</table>
-		<button class="btn btn-success" type="button">Create a User</button>    
-	</form>
-</div>
-<div class="table-responsive col-md-6">
-	<form>
-		<table class="table table-striped">
-			<thead>
-				<tr class="active">
-					<th>Name</th>
-					<th>Subject</th>
-					<th>Delete this Ticket</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="x in problems">
-					<td>{{x.name}}</td>
-					<td>{{x.problem}}</td>
-					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
-				</tr>
-				<tr ng-repeat="x in problems">
-					<td>{{x.name}}</td>
-					<td>{{x.problem}}</td>
-					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
-				</tr>
-				<tr ng-repeat="x in problems">
-					<td>{{x.name}}</td>
-					<td>{{x.problem}}</td>
-					<td><button class="btn btn-danger" type="button">Delete this ticket</button></td>
-				</tr>
-			</tbody>
-		</table>
+		<button class="btn btn-success" ng-click="createUsers(); resetSession(); cancelMessages()"type="button">Create a User</button> 
+	<form class="form-horizontal" ng-show="showcreate" ng-submit="submitCreate()">
+			<div class="form-group" style="margin-top: 10px;">
+						<label for="subject" class="col-lg-2 control-label" style="color: #FFFFFF">Username</label>
+						<div class="col-sm-9">
+							<input name="subject" type="text" class="form-control" placeholder="Please Enter the User's Username" required autofocus="autofocus" maxlength="20" ng-model="createusername"> <br/>
+						</div>
+					</div>
+            <div class="form-group">
+      <label for="textArea" class="col-lg-2 control-label" style="color: #FFFFFF">Password</label>
+      <div class="col-lg-10">
+        <input class="form-control" placeholder="Please Enter the User's Password" type="text" maxlength="15" ng-model="createpassword" required>
+      </div>
+    </div>
+		<div class="form-group">
+      <label for="textArea" class="col-lg-2 control-label" style="color: #FFFFFF">User Type</label>
+      <div class="col-lg-10">
+        <input class="form-control" placeholder="2 for technician, 3 for mortal user" type="number" min="2" max="3" ng-model="createid" required>
+      </div>
+    </div>
+			<div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+		  <button type="submit" class="btn btn-primary" ng-click="resetSession()">Submit</button>
+		  <button type="reset" class="btn btn-default" ng-click="resetSession(); cancelMessages()">Cancel</button>
+      </div>
+    </div>
+		<h4 style="color:red" ng-show="showCreateError">There was an error creating this user. Please try again Later.<br>Usernames must be unique</h4>
+		<h4 style="color:green" ng-show="showCreateSuccess">The user was successfully created.</h4>
 	</form>
 </div>

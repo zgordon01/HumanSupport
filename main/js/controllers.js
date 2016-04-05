@@ -88,15 +88,56 @@ angular.module('landingapp').controller('userscontroller', function($scope, $htt
 
 
 
-angular.module('landingapp').controller('admincontroller', function($scope, $http, $location) {
+angular.module('landingapp').controller('admincontroller', function($scope, $http, $location, queryservice){
+	$scope.showcreate = false;
+	$scope.showCreateError = false;
+	$scope.showCreateSuccess = false;
     $scope.test = "This is admin scope only...";
+	$scope.createUsers = function(){
+		$scope.showcreate = !$scope.showcreate;
+	};
+	$scope.cancelMessages = function(){
+		$scope.showCreateError = false;
+		$scope.showCreateSuccess = false;
+	};
+	
+	$scope.submitCreate = function(){
+		$scope.showCreateError = false;
+		$scope.showCreateSuccess = false;
+		
+		
+		var query = queryservice.query('user/v1/'+sessionStorage.sesskey+'/put', {username:$scope.createusername,password:$scope.createpassword,type_id:$scope.createid}, 'PUT');
+        query.then(function(result){
+            if(result.data.error==="type"||result.data.error==="query"){
+				$scope.showCreateError = !$scope.showCreateError;
+			}
+			else if(result.data.error==="no"){
+				$scope.showCreateSuccess = !$scope.showCreateSuccess;
+			}
+        });
+	};
     var init = function() {
         if (sessionStorage.usertype !== "1") {
             $location.url('invalid');
         }
     }
     init();
+}).factory('queryservice', function($http) {
+    return {
+        query: function(route, params, methodd){
+            return $http({
+                method: methodd,
+                url: 'http://198.211.99.235:8080/' + route,
+                //give params with this syntax {username : $scope.username, password : $scope.pass}
+                data: $.param(params),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
+    }
 });
+
 
 
 angular.module('landingapp').controller('failurecontroller', function($scope, $http, $location) {
@@ -117,9 +158,9 @@ angular.module('landingapp').controller('failurecontroller', function($scope, $h
 });
 
 
+
+
 //--------------------LOGIN MODULE-------------------------
-
-
 //login page module
 angular.module('login', []).controller('logincontroller', function($scope, $http, queryservice) {
     //set our validity and loading booleans for user feedback
@@ -135,7 +176,7 @@ angular.module('login', []).controller('logincontroller', function($scope, $http
     //authentication function
     $scope.auth = function() {
 		$scope.loading = true;
-        var query = queryservice.query('v1/login', {username: $scope.username,password: $scope.pass}, 'POST');
+        var query = queryservice.query('login/v1', {username: $scope.username,password: $scope.pass}, 'POST');
         query.then(function(result){
             //if the credentials are valid, store the user's id and user's type in session storage, stop loading bar and redirect ($location??)
             if (result.data.valid == "yes") {
@@ -165,33 +206,3 @@ angular.module('login', []).controller('logincontroller', function($scope, $http
         }
     }
 });
-
-
-/*Query service
-
-.factory('queryservice', function($http) {
-    return {
-        query: function(route, params, methodd){
-            return $http({
-                method: methodd,
-                url: 'http://198.211.99.235:8080/' + route,
-                //give params with this syntax {username : $scope.username, password : $scope.pass}
-                data: $.param(params),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-        }
-    }
-});
-
-
-
-$scope.function = function() {
-        var query = queryservice.query('v1/login', {username: $scope.username,password: $scope.pass}, 'POST');
-        query.then(function(result){
-			//do things once query has returned
-        });
-    }
-   
-*/
