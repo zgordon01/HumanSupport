@@ -62,9 +62,27 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
     $scope.test = "This is home scope...";
 });
 
+//------------------ Tech Page ----------------//
 
-
-angular.module('landingapp').controller('techcontroller', function($scope, $http, $location) {
+angular.module('landingapp').controller('techcontroller', function($scope, $http, $location, queryservice) {
+    
+    /*landingapp.config(function($httpProvider){
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }); */
+    
+    $delInfo = "";
+    $scope.stackSelected = 1;
+    $scope.table = false;
+    $scope.stackOptions = [
+        1, 2, 3
+    ];
+    
+    $scope.showTable = function() {
+        if ($scope.stackSelected != null) {
+            $scope.table = true;
+        }
+    };
+    
     $scope.test = "This is technician scope only...";
     var init = function() {
         if (sessionStorage.usertype !== "2") {
@@ -72,9 +90,40 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
         }
     }
     init();
+    
+    $scope.clickMe = function(ticket_id) {
+        alert(ticket_id);
+    };
+    
+    
+    
+    $scope.getTickets = function() {
+        alert("Getting tickets");
+        var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/stack/' + $scope.stackSelected , '','GET');
+        query.then(function(result) {
+            alert ("Made it here: Tech Page controller...");
+            $scope.contents = result;
+        });
+    };
+    $scope.getTickets();
+    
+}).factory('queryservice', function($http) {
+    return {
+        query: function(route, params, methodd){
+            return $http({
+                method: methodd,
+                url: 'http://198.211.99.235:8080/' + route,
+                //give params with this syntax {username : $scope.username, password : $scope.pass}
+                data: $.param(params),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
+    }
 });
 
-
+//----------------------------------------------//
 
 angular.module('landingapp').controller('userscontroller', function($scope, $http, $location) {
     $scope.test = "This is mortals scope only...";

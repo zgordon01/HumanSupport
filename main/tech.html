@@ -1,2 +1,31 @@
+<div ng-controller="techcontroller" ng-init="getTickets">
+
 tech page here!
 {{test}}
+    <div class="col-sm-1"> 
+        <select ng-model="stackSelected" id="stack" class="form-control" ng-click="showTable(); getTickets()">
+            <option ng-repeat="stack in stackOptions" value="{{stack}}"> {{stack}} </option>
+        </select>
+    </div>
+    <div>
+        This is where the table will be.... {{stackSelected}}
+        {{contents.data.result[x].priority}}
+        {{length}}
+        {{delInfo}}
+        <table>
+            <th>
+                <td> Description </td>
+                <td> Ticket ID </td>
+                <td> Priority </td>
+                <td> Subject </td>
+            </th>
+            <tr ng-repeat="x in contents.data.result" style="padding : 5px 0px">
+                <td> {{x.description}} </td>
+                <td> {{x.ticket_id}} </td>
+                <td> {{x.priority}} </td>
+                <td> {{x.subject}} </td>
+                <td><a href="#" id="{{x.ticket_id}}" class="btn btn-danger" ng-click="clickMe({{x.ticket_id}})" value="{{x.ticket_id}}">Danger</a></td>
+             </tr>
+        </table>
+    </div>
+</div>
