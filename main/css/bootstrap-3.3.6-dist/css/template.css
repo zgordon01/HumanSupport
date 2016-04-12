@@ -6949,7 +6949,7 @@ a.list-group-item-danger.active:focus {
         }
 
         tbody {
-            height: 200px;
+            height: 20em;
             overflow-y: auto;
         }
 

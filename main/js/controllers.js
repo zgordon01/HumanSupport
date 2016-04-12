@@ -62,6 +62,9 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
     $scope.test = "This is home scope...";
 });
 
+
+
+
 //------------------ Tech Page ----------------//
 
 angular.module('landingapp').controller('techcontroller', function($scope, $http, $location, queryservice) {
@@ -83,7 +86,6 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
         }
     };
     
-    $scope.test = "This is technician scope only...";
     var init = function() {
         if (sessionStorage.usertype !== "2") {
             $location.url('invalid');
@@ -98,10 +100,10 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
     
     
     $scope.getTickets = function() {
-        alert("Getting tickets");
+       // alert("Getting tickets");
         var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/stack/' + $scope.stackSelected , '','GET');
         query.then(function(result) {
-            alert ("Made it here: Tech Page controller...");
+            //alert ("Made it here: Tech Page controller...");
             $scope.contents = result;
         });
     };
@@ -123,6 +125,9 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
     }
 });
 
+
+
+
 //----------------------------------------------//
 
 angular.module('landingapp').controller('userscontroller', function($scope, $http, $location) {
@@ -137,23 +142,26 @@ angular.module('landingapp').controller('userscontroller', function($scope, $htt
 
 
 
+
+
+//--------------------------------------------------------//
+
 angular.module('landingapp').controller('admincontroller', function($scope, $http, $location, queryservice){
-	$scope.showcreate = false;
-	$scope.showCreateError = false;
-	$scope.showCreateSuccess = false;
-    $scope.test = "This is admin scope only...";
+    $scope.showCreateUser = true;
 	$scope.createUsers = function(){
 		$scope.showcreate = !$scope.showcreate;
+        $scope.showCreateUser = !$scope.showCreateUser;
 	};
 	$scope.cancelMessages = function(){
 		$scope.showCreateError = false;
 		$scope.showCreateSuccess = false;
+        $scope.showDeleteSuccess = false;
+        $scope.showDeleteError = false;
 	};
 	
 	$scope.submitCreate = function(){
 		$scope.showCreateError = false;
 		$scope.showCreateSuccess = false;
-		
 		
 		var query = queryservice.query('user/v1/'+sessionStorage.sesskey+'/put', {username:$scope.createusername,password:$scope.createpassword,type_id:$scope.createid}, 'PUT');
         query.then(function(result){
@@ -163,12 +171,41 @@ angular.module('landingapp').controller('admincontroller', function($scope, $htt
 			else if(result.data.error==="no"){
 				$scope.showCreateSuccess = !$scope.showCreateSuccess;
 			}
+            $scope.getUsers();
         });
 	};
+    
+    $scope.submitDelete = function(id){
+        
+        var query = queryservice.query('user/v1/'+sessionStorage.sesskey+'/delete', {user_id : id}, 'DELETE');
+        query.then(function(result){
+            if(result.data.error==="type"||result.data.error==="query"){
+				$scope.showDeleteError = !$scope.showDeleteError;
+			}
+			else if(result.data.error==="no"){
+				$scope.showDeleteSuccess = !$scope.showDeleteSuccess;
+			}
+            $scope.getUsers();
+        });
+        
+    };
+    
+    $scope.getUsers = function(){
+        var query = queryservice.query('user/v1/'+sessionStorage.sesskey+'/get', {}, 'GET');
+        query.then(function(result){
+            if(result.data.error==="type"||result.data.error==="query"){
+				$scope.showDeleteError = !$scope.showDeleteError;
+			}
+			else if(result.data.error==="no"){
+				$scope.users = result.data; 
+			}
+        });
+    };
     var init = function() {
         if (sessionStorage.usertype !== "1") {
             $location.url('invalid');
         }
+        $scope.getUsers();
     }
     init();
 }).factory('queryservice', function($http) {
@@ -186,6 +223,9 @@ angular.module('landingapp').controller('admincontroller', function($scope, $htt
         }
     }
 });
+
+//-----------------------------------------------------------------------//
+
 
 
 
@@ -209,7 +249,10 @@ angular.module('landingapp').controller('failurecontroller', function($scope, $h
 
 
 
-//--------------------LOGIN MODULE-------------------------
+//--------------------LOGIN MODULE-------------------------//
+
+
+
 //login page module
 angular.module('login', []).controller('logincontroller', function($scope, $http, queryservice) {
     //set our validity and loading booleans for user feedback
