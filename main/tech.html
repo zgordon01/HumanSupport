@@ -1,17 +1,15 @@
 <div ng-controller="techcontroller" ng-init="getTickets">
 
-tech page here!
-{{test}}
-    <div class="col-sm-1"> 
+    <div class="col-sm-1" class="container-fluid"> 
         <select ng-model="stackSelected" id="stack" class="form-control" ng-click="showTable(); getTickets()">
             <option ng-repeat="stack in stackOptions" value="{{stack}}"> {{stack}} </option>
         </select>
     </div>
-    <div class="col-sm-6">
+    <div class="col-lg-6" class="container-fluid">
+        
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th> Description </th>
                     <th> Ticket ID </th>
                     <th> Priority </th>
                     <th> Subject </th>
@@ -19,11 +17,10 @@ tech page here!
             </thead>
             <tbody>
                 <tr ng-repeat="x in contents.data.result" style="padding : 5px 0px">
-                    <td> {{x.description}} </td>
                     <td> {{x.ticket_id}} </td>
                     <td> {{x.priority}} </td>
                     <td> {{x.subject}} </td>
-                    <td><a href="#" id="{{x.ticket_id}}" class="btn btn-danger" ng-click="clickMe({{x.ticket_id}})" value="{{x.ticket_id}}">Danger</a></td>
+                    <td class="col-xs-2 btn btn-danger" ng-click="deleteTicket(x.ticket_id);">Delete Ticket</td>
                 </tr>
             </tbody>
         </table>

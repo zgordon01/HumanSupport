@@ -59,7 +59,6 @@ angular.module('landingapp').controller('home', function($scope, $http, $timeout
     };
     //invoke init() on page load
     init();
-    $scope.test = "This is home scope...";
 });
 
 
@@ -93,12 +92,6 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
     }
     init();
     
-    $scope.clickMe = function(ticket_id) {
-        alert(ticket_id);
-    };
-    
-    
-    
     $scope.getTickets = function() {
        // alert("Getting tickets");
         var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/stack/' + $scope.stackSelected , '','GET');
@@ -108,6 +101,20 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
         });
     };
     $scope.getTickets();
+    
+    
+    $scope.deleteTicket = function(ticketid) {
+        //alert(ticket_id);
+        var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/delete',  {ticket_id : ticketid}, 'DELETE');
+        query.then(function(result) {
+            if (result.data.error === "no") {
+                alert("Delete Successful");
+                $scope.getTickets();
+            } else {
+                alert("Error: Delete Not Successful");
+            }
+        });
+    };
     
 }).factory('queryservice', function($http) {
     return {
@@ -128,16 +135,97 @@ angular.module('landingapp').controller('techcontroller', function($scope, $http
 
 
 
-//----------------------------------------------//
+//----------------------User Controller------------------------//
 
-angular.module('landingapp').controller('userscontroller', function($scope, $http, $location) {
-    $scope.test = "This is mortals scope only...";
+angular.module('landingapp').controller('userscontroller', function($scope, $http, $location, queryservice) {
+    $scope.showCreate = false;
+    $scope.showTable = true;
+    $scope.showError = false;
+    $scope.showCreateButton = true;
+    $scope.showExitButton = false;
+    
+    $scope.ticketSubject;
+    $scope.ticketDescription;
+    
+    $scope.cancelButton = function() {
+       $scope.ticketSubject = "";
+       $scope.ticketDescription = ""; 
+    };
+    
+    $scope.clickCreate = function() {
+        $scope.showCreateButton = false;
+        $scope.showCreate = true;
+        $scope.showTable = false;
+        $scope.showExitButton = true;
+        
+    };
+    
+    $scope.clickExit = function() {
+       $scope.showCreateButton = true;
+       $scope.showTable = true;
+       $scope.showCreate = false;
+       $scope.showExitButton = false;
+    };
+    
     var init = function() {
         if (sessionStorage.usertype !== "3") {
             $location.url('invalid');
         }
     }
     init();
+    
+    
+    
+    $scope.getTickets = function() {
+        alert("Getting tickets");
+        var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/info/get', '' ,'GET');
+        query.then(function(result) {
+            if (result.data.error == "no") {
+                //alert("Got thes godz");
+                $scope.contents = result;
+                
+            } else {
+                $scope.showError = true;
+                $scope.showTable = false;
+                
+                //alert("Uh Oh");
+            }
+            
+        });
+    };
+    $scope.getTickets();
+    
+    $scope.createTicket = function() {
+        var query = queryservice.query('ticket/v1/' + sessionStorage.sesskey + '/put', {subject: $scope.ticketSubject, description: $scope.ticketDescription} ,'PUT');
+        query.then(function(result) {
+            if (result.data.error == "no") {
+                //alert("Got thes godz");
+                alert("Ticket Creation Successful");
+                $scope.getTickets();
+                $scope.cancelButton();
+            } else {
+                alert("Ticket Creation Failed");
+                
+                //alert("Uh Oh");
+            }
+            
+        });
+    };
+    
+}).factory('queryservice', function($http) {
+    return {
+        query: function(route, params, methodd){
+            return $http({
+                method: methodd,
+                url: 'http://198.211.99.235:8080/' + route,
+                //give params with this syntax {username : $scope.username, password : $scope.pass}
+                data: $.param(params),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
+    }
 });
 
 
