@@ -344,7 +344,24 @@ angular.module('landingapp').controller('failurecontroller', function($scope, $h
 //login page module
 angular.module('login', []).controller('logincontroller', function($scope, $http, queryservice) {
     //set our validity and loading booleans for user feedback
-
+    
+    //User creation models
+    $scope.username;
+    $scope.usernameConfirm;
+    $scope.password;
+    $scope.passwordConfirm;
+    
+    //Checks
+    $scope.usernamePass;
+    $scope.passwordPass;
+    
+    $scope.usernameError;
+    $scope.passwordError = false;
+    
+    //This is for hiding/showing divs
+    $scope.showLogin = true;
+    $scope.showCreateUser = false;
+    
     //valid is for the incorrect credentials popup
     $scope.valid = true;
     //loading is for the striped loading bar
@@ -352,6 +369,71 @@ angular.module('login', []).controller('logincontroller', function($scope, $http
     //default username and password to ""
     $scope.username = "";
     $scope.pass = "";
+    
+    $scope.createDiv = function() {
+        $scope.showLogin = false;
+        $scope.showCreateUser = true;
+    };
+    
+    $scope.return = function() {
+        $scope.showLogin = true;
+        $scope.showCreateUser = false;
+        $scope.username = "";
+        $scope.usernameConfirm = "";
+        $scope.password = "";
+        $scope.passwordConfirm = "";
+    };
+    
+    $scope.cancel = function() {
+       $scope.username = "";
+       $scope.usernameConfirm = "";
+       $scope.password = "";
+       $scope.passwordConfirm = "";
+    };
+    
+    $scope.checkUsername = function() {
+      if ($scope.username == $scope.usernameConfirm) {
+          //alert("True");
+          $scope.usernamePass = true;
+          $scope.usernameError = false;
+      } else {
+          //alert("False");
+          $scope.usernamePass = false;
+          $scope.usernameError = true;
+      }
+    };
+    
+    $scope.checkPassword = function() {
+      if ($scope.password == $scope.passwordConfirm) {
+          $scope.passwordPass = true;
+          $scope.passwordError = false;
+      } else {
+          $scope.passwordPass = false;
+          $scope.passwordError = true;
+      }
+    };
+    
+    $scope.create = function() {
+        if ($scope.usernamePass && $scope.passwordPass) {
+           var query = queryservice.query('user/v1/put', {username: $scope.username, password : $scope.password}, 'PUT');
+           query.then(function(result) {
+               if (result.data.error == "yes") {
+                   alert("Error: Query has failed");
+               } else {
+                   alert($scope.username + " has been created!");
+                   $scope.showLogin = true;
+                   $scope.showCreateUser = false;
+                   $scope.username = "";
+                   $scope.usernameConfirm = "";
+                   $scope.password = "";
+                   $scope.passwordConfirm = "";
+               }
+               
+           });
+        } else {
+            alert("Error: Passwords or Usernames do not match.");
+        }
+    };
 	
     //authentication function
     $scope.auth = function() {

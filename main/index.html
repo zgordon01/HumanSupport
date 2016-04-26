@@ -7,12 +7,12 @@
         <div style="font-size: 500%; text-align: center;"><img src="img/logo_600.png" alt="Human Suport Logo" width="200px" height="200px"> Human Support</div>
         <div style="font-size: 350%; text-align:center;"> Ticket Support Manager{{results}}</div>
         <div class="container container-table">
-            <div class="col-sm-6 col-md-offset-3" style="margin-top: 10%;border: 4px solid #888888;border-radius:20px;">
+            <div ng-show="showLogin" class="col-sm-6 col-md-offset-3" style="margin-top: 10%;border: 4px solid #888888;border-radius:20px;">
                 <div class="alert alert-dismissible alert-warning" ng-hide="valid">
                     <strong>Oh snap!</strong> Invalid Username or password. Please try again.
                 </div>
 				
-                <form class="form-horizontal" name="loginform" novalidate ng-submit="auth()">
+                
                     <div class="form-group" style="margin-top: 10px;">
                         <b for="loginID" class="col-sm-3 control-label" style="color: #FFFFFF">Username</b>
                         <div class="col-sm-9">
@@ -27,15 +27,43 @@
                     </div>
                     <div class="form-group last">
                         <div class="col-sm-offset-3 col-sm-9">
-                            <button id="submit" name="submit" type="submit" value="" class="btn btn-primary btn-lg" style=" width: 100%;">Sign In</button>
+                            <button id="submit" name="submit" ng-click="auth()" value="" class="btn btn-primary btn-lg" style=" width: 100%;">Sign In</button>
+                            <button id="create" name="create" ng-click="createDiv()" class="btn btn-success btn-lg" style="width: 100%;"> Create an Account </button>
                         </div>
                     </div>
                     <div class="progress progress-striped active">
                         <div class="progress-bar" style="width: 100%" ng-show="loading"></div>
                     </div>
-                </form>
-				
+                
+                
             </div>
+        </div>
+        <div ng-show="showCreateUser" class="col-sm-6 col-md-offset-3" style="margin-top: 10%;border: 4px solid #888888;border-radius:20px;">
+            <form  class="form-horizontal" name="createUser" novalidate>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <b for="username" class="col-sm-3 control-label" style="color: #FFFFFF">Username</b>
+                        <div class="col-sm-9">
+                            <input placeholder="Enter username" id="username" name="username" type="text" class="form-control" required style="" autofocus="autofocus" ng-model="username" ng-change="checkUsername()"> <br/>
+                            <input placeholder="Re-enter username" id="usernameConfirm" name="usernameConfirm" type="text" class="form-control" required style="" autofocus="autofocus" ng-model="usernameConfirm" ng-change="checkUsername()"> <br/>
+                            <label ng-show="usernameError" style="color : red">Usernames have to Match </label>
+                        </div> 
+				    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <b for="password" class="col-sm-3 control-label" style="color: #FFFFFF">Password</b>
+                        <div class="col-sm-9">
+                            <input placeholder="Enter password" id="password" name="password" type="password" class="form-control" required style="" autofocus="autofocus" ng-model="password" ng-change="checkPassword()"> <br/>
+                            <input placeholder="Re-enter password" id="passwordConfirm" name="passwordConfirm" type="password" class="form-control" required style="" autofocus="autofocus" ng-model="passwordConfirm" ng-change="checkPassword()"> <br/>
+                            <label ng-show="passwordError" style="color : red">Passwords have to match</label>  
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button id="return" name="return" ng-click="return()" value="" class="btn btn-warning btn-lg" style=" width: 100%;">Return to Login</button>
+                            <button id="cancel" name="cancel" ng-click="cancel()" value="" class="btn btn-primary btn-lg" style=" width: 100%;">Cancel</button>
+                            <button id="create" name="create" ng-click="create()" class="btn btn-success btn-lg" style="width: 100%;"> Sumbit </button>
+                        </div>
+                    </div>
+            </form>
         </div>
     </body>
     <script src="js/jquery-2.2.0.min.js"></script>

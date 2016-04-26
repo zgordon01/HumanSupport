@@ -1,5 +1,5 @@
 
-<div class="table-responsive col-md-6">
+<div class="table col-md-6" style="overflow = hidden;">
     <h3 style="text-align:center;">Technicians</h3>
     <table class="table table-striped">
         <thead>
@@ -17,7 +17,32 @@
             </tr>
         </tbody>
     </table>
-    
+</div>
+<div class="table col-md-6" style="overflow = hidden;">
+    <h3 style="text-align:center;">Regular Users</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr class="active">
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Delete User</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in users.results2">
+                <td>{{x.user_id}}</td>
+                <td>{{x.username}}</td>
+                <td><button class="btn btn-danger" type="button" ng-click="resetSession();cancelMessages();submitDelete(x.user_id);">Delete User</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <h4 style="color:red" ng-show="showCreateError">There was an error creating this user. Please try again Later.<br>Usernames must be unique</h4>
+    <h4 style="color:green" ng-show="showCreateSuccess">The user was successfully created.</h4>
+    <h4 style="color:red" ng-show="showDeleteError">There was an error deleting this user. Please try again Later.<br>Users must not be tied to any tickets</h4>
+    <h4 style="color:green" ng-show="showDeleteSuccess">The user was successfully deleted.</h4>
+        
+</div>
+<div style="text-align:center;">
     <button class="btn btn-success"  ng-show="showCreateUser" ng-click="createUsers(); resetSession(); cancelMessages()" type="button">Create a User</button>
     <button class="btn btn-warning"  ng-hide="showCreateUser" ng-click="cancelMessages; createUsers()">Hide Create User</button> 
     <form class="form-horizontal" ng-show="showcreate" ng-submit="resetSession();cancelMessages();submitCreate()">
@@ -47,28 +72,4 @@
         </div>
         
     </form>
-</div>
-<div class="col-md-6">
-    <h3 style="text-align:center;">Regular Users</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr class="active">
-                <th>User ID</th>
-                <th>User Name</th>
-                <th>Delete User</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="x in users.results2">
-                <td>{{x.user_id}}</td>
-                <td>{{x.username}}</td>
-                <td><button class="btn btn-danger" type="button" ng-click="resetSession();cancelMessages();submitDelete(x.user_id);">Delete User</button></td>
-            </tr>
-        </tbody>
-    </table>
-    <h4 style="color:red" ng-show="showCreateError">There was an error creating this user. Please try again Later.<br>Usernames must be unique</h4>
-    <h4 style="color:green" ng-show="showCreateSuccess">The user was successfully created.</h4>
-    <h4 style="color:red" ng-show="showDeleteError">There was an error deleting this user. Please try again Later.<br>Users must not be tied to any tickets</h4>
-    <h4 style="color:green" ng-show="showDeleteSuccess">The user was successfully deleted.</h4>
-        
 </div>
